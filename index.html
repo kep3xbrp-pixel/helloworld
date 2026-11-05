@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Adventure - Beginner</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--blue:#3155b9;--purple:#8053c9;--pink:#ff6384;--yellow:#ffcb45;--green:#26ae80;--bg:#f0f3ff;--dark:#26345b}
+*{box-sizing:border-box}body{margin:0;font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark)}
+header{background:linear-gradient(120deg,#344db7,#8253c7);color:white;padding:25px 5%;border-radius:0 0 30px 30px}
+.header-content{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:900}.logo span{color:var(--yellow)}.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:#ffffff25;padding:9px 16px;border-radius:15px;font-weight:800}
+main{max-width:1100px;margin:25px auto;padding:0 18px}.hero{background:white;padding:28px;border-radius:25px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 5px 18px #273d7110}
+.hero h1{color:var(--blue);font-size:32px;margin:0 0 8px}.hero p{margin:0;color:#66718e}.mascot{font-size:75px;background:#fff3ce;padding:15px;border-radius:25px}
+.section-title{margin:30px 0 15px;font-size:22px;font-weight:900}.categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.category{border:0;border-radius:20px;padding:20px;text-align:left;cursor:pointer;background:white;box-shadow:0 5px 15px #273d7110;transition:.2s;font-family:inherit;color:var(--dark)}
+.category:hover{transform:translateY(-5px);box-shadow:0 8px 20px #273d7120}.category .emoji{font-size:36px}.category h3{margin:8px 0 4px;font-size:17px}.category p{margin:0;color:#78819a;font-size:13px}
+.progress-bg{background:#e9eafa;height:9px;border-radius:20px;overflow:hidden;margin-top:12px}.progress-fill{background:var(--green);height:100%;width:0%;transition:.3s}
+.modes{display:flex;flex-wrap:wrap;gap:10px}.mode-btn,.back-btn{border:0;padding:12px 18px;border-radius:13px;background:#fff;color:var(--blue);font-weight:900;font-family:inherit;cursor:pointer}
+.mode-btn:hover,.back-btn:hover{background:#e5e9ff}.game{display:none;background:white;border-radius:25px;padding:25px;margin-top:20px;box-shadow:0 5px 20px #273d7112}
+.game-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.question-number{background:#eeeaff;color:var(--purple);padding:8px 14px;border-radius:12px;font-weight:900}
+.question{font-size:23px;font-weight:900;margin:25px 0 10px}.instruction{color:#78819a;margin-bottom:20px}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.answer{background:#f1f3ff;border:2px solid transparent;padding:16px;border-radius:15px;cursor:pointer;font-family:inherit;font-size:16px;font-weight:800;color:var(--dark);text-align:left}
+.answer:hover{border-color:var(--blue)}.answer.correct{background:#d8f8e9;border-color:var(--green)}.answer.wrong{background:#ffe1e6;border-color:var(--pink)}.answer:disabled{cursor:default}
+input[type=text]{padding:14px;border:2px solid #dce1f4;border-radius:13px;width:100%;max-width:450px;font-family:inherit;font-size:17px;outline:none}
+input:focus{border-color:var(--blue)}.action{background:var(--blue);color:white;border:0;border-radius:13px;padding:14px 24px;margin-top:18px;cursor:pointer;font-weight:900;font-family:inherit;font-size:16px}
+.action:hover{background:#233f9d}.feedback{padding:15px;border-radius:13px;margin-top:17px;display:none;font-weight:800}.good{background:#d8f8e9;color:#14734f}.bad{background:#ffe1e6;color:#bd3652}
+.word-slots{display:flex;gap:8px;flex-wrap:wrap;min-height:55px;margin:20px 0;padding:12px;background:#f1f3ff;border-radius:14px}
+.word{padding:10px 15px;border-radius:10px;background:#ffdf83;border:0;font-weight:900;cursor:pointer;font-family:inherit}.word:hover{transform:scale(1.04)}
+.word-bank{display:flex;gap:9px;flex-wrap:wrap}.hidden{display:none!important}.tools{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.tools button{border:0;background:#eeeaff;color:var(--purple);padding:12px 16px;border-radius:12px;font-family:inherit;font-weight:900;cursor:pointer}
+.letter-grid{display:grid;grid-template-columns:repeat(9,38px);gap:4px;justify-content:center;margin:20px auto}.letter{width:38px;height:38px;background:#edf0ff;border:0;border-radius:7px;font-weight:900;cursor:pointer}
+.letter.selected{background:var(--yellow)}.letter.found{background:#a8f0ce}.crossword{display:grid;gap:8px;max-width:500px}.crossword-row{display:flex;align-items:center;gap:10px}
+.crossword-row input{width:100px;text-transform:uppercase}.result{text-align:center;padding:30px 10px}.result .big{font-size:65px}.result h2{color:var(--blue)}
+footer{text-align:center;padding:30px;color:#8790aa}
+@media(max-width:600px){.hero h1{font-size:25px}.mascot{font-size:50px}.question{font-size:20px}.letter-grid{grid-template-columns:repeat(9,30px)}.letter{width:30px;height:30px}}
+</style>
+</head>
+<body>
+<header><div class="header-content"><div class="logo">🎮 ENGLISH <span>ADVENTURE</span></div><div class="stats"><div class="stat">⭐ Puntos: <span id="score">0</span></div><div class="stat">🏆 Aciertos: <span id="hits">0</span></div></div></div></header>
+<main>
+<section class="hero"><div><h1>¡Let's play English! 🚀</h1><p>Aprende inglés jugando, practicando y superando desafíos.</p><p><b>Primer año de Secundaria</b> · Nivel principiante</p></div><div class="mascot">🦉</div></section>
+<h2 class="section-title">📚 Selecciona una categoría</h2><div class="categories" id="categories"></div>
+<h2 class="section-title">🎲 Juegos especiales</h2><div class="modes"><button class="mode-btn" onclick="startPuzzle('wordsearch')">🔎 Sopa de letras</button><button class="mode-btn" onclick="startPuzzle('crossword')">✏️ Crucigrama</button><button class="mode-btn" onclick="startReview()">🌟 Reto general</button></div>
+<section class="game" id="game"><div class="game-top"><button class="back-btn" onclick="goHome()">← Categorías</button><span class="question-number" id="counter"></span></div><div class="progress-bg"><div class="progress-fill" id="progress"></div></div><div id="questionArea"></div><div class="feedback" id="feedback"></div><button class="action" id="nextBtn" onclick="nextQuestion()">Siguiente ➜</button></section>
+</main><footer>ENGLISH ADVENTURE · Learn, Practice and Have Fun! 🎓</footer>
+<script>
+const categories=[
+{name:"Personal Pronouns",emoji:"👦",color:"#e4eaff",description:"Los pronombres personales",questions:[
+{type:"mc",q:"¿Qué pronombre reemplaza a una persona que habla de sí misma?",options:["You","I","He","They"],a:"I",why:"I significa yo."},
+{type:"mc",q:"¿Qué pronombre significa TÚ o USTED?",options:["She","It","You","We"],a:"You",why:"You significa tú o usted."},
+{type:"mc",q:"¿Qué pronombre usamos para hablar de un hombre?",options:["He","She","It","We"],a:"He",why:"He significa él."},
+{type:"mc",q:"¿Qué pronombre usamos para hablar de una mujer?",options:["They","He","She","I"],a:"She",why:"She significa ella."},
+{type:"mc",q:"¿Qué pronombre usamos para hablar de varias personas?",options:["It","They","He","She"],a:"They",why:"They significa ellos o ellas."},
+{type:"tf",q:"El pronombre I significa YO.",a:true,why:"I se utiliza para hablar de uno mismo."},
+{type:"tf",q:"El pronombre He se utiliza para hablar de una mujer.",a:false,why:"He significa él. She significa ella."},
+{type:"tf",q:"We significa nosotros o nosotras.",a:true,why:"We representa a un grupo que nos incluye."},
+{type:"fill",q:"Completa: María is a student. ___ is a student.",a:"She",why:"María es una mujer, por eso utilizamos She."},
+{type:"fill",q:"Completa: Pedro is my friend. ___ is my friend.",a:"He",why:"Pedro es un hombre, por eso utilizamos He."},
+{type:"fill",q:"Completa: My brother and I = ___.",a:"We",why:"My brother and I significa nosotros."},
+{type:"fill",q:"Completa: The dog = ___.",a:"It",why:"Para un animal en singular, normalmente usamos It."},
+{type:"mc",q:"¿Cuál es el pronombre correcto para reemplazar a Ana y Luis?",options:["He","She","They","It"],a:"They",why:"Son dos personas: They."},
+{type:"tf",q:"You puede utilizarse para hablar con una sola persona.",a:true,why:"You sirve para singular y plural."},
+{type:"order",q:"Ordena los pronombres: She / is / happy",a:"She is happy",why:"Primero el sujeto, luego el verbo y finalmente el complemento."}
+]},
+{name:"Singular and Plural",emoji:"🍎",color:"#ffe9e2",description:"Singular y plural",questions:[
+{type:"mc",q:"¿Qué significa singular?",options:["Una sola persona o cosa","Muchas personas","Dos oraciones"],a:"Una sola persona o cosa",why:"Singular indica uno."},
+{type:"mc",q:"¿Qué significa plural?",options:["Una sola cosa","Dos o más cosas","Ninguna cosa"],a:"Dos o más cosas",why:"Plural indica más de uno."},
+{type:"mc",q:"¿Cuál es el plural de CAT?",options:["Cates","Cats","Caties"],a:"Cats",why:"Generalmente añadimos -s."},
+{type:"mc",q:"¿Cuál es el plural de BOOK?",options:["Bookes","Books","Bookies"],a:"Books",why:"Añadimos -s."},
+{type:"mc",q:"¿Cuál es el plural de BOX?",options:["Boxs","Boxies","Boxes"],a:"Boxes",why:"Las palabras terminadas en x añaden -es."},
+{type:"mc",q:"¿Cuál es el plural de BABY?",options:["Babys","Babies","Babyes"],a:"Babies",why:"La consonante + y cambia a -ies."},
+{type:"tf",q:"La palabra CATS está en plural.",a:true,why:"Cats indica más de un gato."},
+{type:"tf",q:"La palabra BOOK está en plural.",a:false,why:"Book es singular."},
+{type:"tf",q:"Para formar el plural de muchas palabras añadimos -s.",a:true,why:"Es la regla general."},
+{type:"fill",q:"Escribe el plural de DOG:",a:"Dogs",why:"Dog + s = Dogs."},
+{type:"fill",q:"Escribe el plural de BUS:",a:"Buses",why:"Bus + es = Buses."},
+{type:"fill",q:"Escribe el plural de CLASS:",a:"Classes",why:"Class + es = Classes."},
+{type:"mc",q:"¿Cuál de estas palabras está en singular?",options:["Pencils","Students","Teacher","Books"],a:"Teacher",why:"Teacher indica una persona."},
+{type:"mc",q:"¿Cuál de estas palabras está en plural?",options:["Girl","Pen","Desks","Boy"],a:"Desks",why:"Desks indica varios escritorios."},
+{type:"order",q:"Ordena: two / books / are / here",a:"Two books are here",why:"El número two acompaña al sustantivo plural books."}
+]},
+{name:"Verb To Be",emoji:"🔤",color:"#e5f8ed",description:"Am, Is y Are",questions:[
+{type:"mc",q:"¿Cuál es el verbo correcto para I?",options:["Is","Are","Am"],a:"Am",why:"I siempre se acompaña de Am."},
+{type:"mc",q:"¿Cuál es el verbo correcto para HE?",options:["Am","Is","Are"],a:"Is",why:"He + Is."},
+{type:"mc",q:"¿Cuál es el verbo correcto para THEY?",options:["Are","Am","Is"],a:"Are",why:"They + Are."},
+{type:"mc",q:"Completa: She ___ a student.",options:["Am","Are","Is"],a:"Is",why:"She + Is."},
+{type:"mc",q:"Completa: We ___ friends.",options:["Is","Are","Am"],a:"Are",why:"We + Are."},
+{type:"tf",q:"Am se utiliza con el pronombre I.",a:true,why:"La combinación correcta es I am."},
+{type:"tf",q:"Is se utiliza con You.",a:false,why:"You utiliza Are."},
+{type:"tf",q:"Are se utiliza con They.",a:true,why:"They are."},
+{type:"fill",q:"Completa: I ___ happy.",a:"am",why:"I am happy."},
+{type:"fill",q:"Completa: He ___ my brother.",a:"is",why:"He is my brother."},
+{type:"fill",q:"Completa: You ___ a student.",a:"are",why:"You are a student."},
+{type:"fill",q:"Completa: The students ___ here.",a:"are",why:"The students equivale a They."},
+{type:"mc",q:"¿Cuál oración está correctamente escrita?",options:["I is happy","I am happy","I are happy"],a:"I am happy",why:"I debe acompañarse de am."},
+{type:"order",q:"Ordena: is / She / intelligent",a:"She is intelligent",why:"Sujeto + verbo + complemento."},
+{type:"order",q:"Ordena: are / They / students",a:"They are students",why:"They + are + students."}
+]},
+{name:"Articles A and AN",emoji:"📖",color:"#fff3ce",description:"Uso de los artículos A y AN",questions:[
+{type:"mc",q:"¿Cuándo utilizamos A?",options:["Antes de un sonido consonántico","Antes de un sonido vocálico","Solo en plural"],a:"Antes de un sonido consonántico",why:"A se usa antes de sonidos consonánticos."},
+{type:"mc",q:"¿Cuándo utilizamos AN?",options:["Antes de un sonido consonántico","Antes de un sonido vocálico","Solo en plural"],a:"Antes de un sonido vocálico",why:"AN se usa antes de sonidos vocálicos."},
+{type:"mc",q:"Completa: ___ apple.",options:["A","AN"],a:"AN",why:"Apple comienza con sonido vocálico."},
+{type:"mc",q:"Completa: ___ book.",options:["A","AN"],a:"A",why:"Book comienza con sonido consonántico."},
+{type:"mc",q:"Completa: ___ orange.",options:["A","AN"],a:"AN",why:"Orange comienza con sonido vocálico."},
+{type:"mc",q:"Completa: ___ pencil.",options:["A","AN"],a:"A",why:"Pencil comienza con sonido consonántico."},
+{type:"tf",q:"AN se utiliza antes de un sonido vocálico.",a:true,why:"Esa es la regla principal."},
+{type:"tf",q:"A apple es la forma correcta.",a:false,why:"La forma correcta es An apple."},
+{type:"tf",q:"A se utiliza antes de un sonido consonántico.",a:true,why:"Por ejemplo: a book."},
+{type:"fill",q:"Completa: ___ elephant.",a:"An",why:"Elephant comienza con sonido vocálico."},
+{type:"fill",q:"Completa: ___ teacher.",a:"A",why:"Teacher comienza con sonido consonántico."},
+{type:"fill",q:"Completa: ___ egg.",a:"An",why:"Egg comienza con sonido vocálico."},
+{type:"fill",q:"Completa: ___ car.",a:"A",why:"Car comienza con sonido consonántico."},
+{type:"mc",q:"¿Cuál es la oración correcta?",options:["A orange","An orange","An book"],a:"An orange",why:"Orange utiliza AN."},
+{type:"order",q:"Ordena: is / an / It / apple",a:"It is an apple",why:"Sujeto + verbo + artículo + sustantivo."}
+]},
+{name:"Sentence Structure",emoji:"🧩",color:"#eee5ff",description:"Estructura de las oraciones",questions:[
+{type:"mc",q:"¿Cuál es el orden básico de una oración afirmativa en inglés?",options:["Verbo + sujeto + complemento","Sujeto + verbo + complemento","Complemento + sujeto + verbo"],a:"Sujeto + verbo + complemento",why:"El orden básico es Subject + Verb + Complement."},
+{type:"mc",q:"¿Cuál oración está correctamente ordenada?",options:["Happy is she","She happy is","She is happy"],a:"She is happy",why:"El sujeto aparece antes del verbo."},
+{type:"tf",q:"En inglés, generalmente el sujeto aparece antes del verbo.",a:true,why:"El orden habitual es sujeto + verbo."},
+{type:"tf",q:"La oración 'Is happy she' está correctamente ordenada.",a:false,why:"La forma correcta es She is happy."},
+{type:"order",q:"Ordena: student / a / I / am",a:"I am a student",why:"I + am + a student."},
+{type:"order",q:"Ordena: my / is / This / school",a:"This is my school",why:"This + is + my school."},
+{type:"order",q:"Ordena: are / friends / We",a:"We are friends",why:"We + are + friends."},
+{type:"order",q:"Ordena: beautiful / is / It",a:"It is beautiful",why:"It + is + beautiful."},
+{type:"fill",q:"Completa: She ___ a teacher.",a:"is",why:"El verbo correcto para She es is."},
+{type:"fill",q:"Completa: They ___ happy.",a:"are",why:"They se utiliza con are."},
+{type:"mc",q:"¿Qué elemento encontramos normalmente al inicio de una oración?",options:["El sujeto","El punto final","El complemento"],a:"El sujeto",why:"El sujeto suele iniciar la oración."},
+{type:"mc",q:"¿Cuál es el orden correcto?",options:["We / are / students","Are / students / we","Students / we / are"],a:"We / are / students",why:"Sujeto + verbo + complemento."},
+{type:"tf",q:"Una oración normalmente comienza con letra mayúscula.",a:true,why:"La primera palabra se escribe con mayúscula."},
+{type:"tf",q:"Las oraciones en inglés no necesitan punto final.",a:false,why:"Las oraciones afirmativas normalmente terminan con punto."},
+{type:"order",q:"Ordena: English / study / I",a:"I study English",why:"Sujeto + verbo + complemento."}
+]},
+{name:"Negative Sentences",emoji:"🚫",color:"#ffe5ed",description:"Oraciones negativas",questions:[
+{type:"mc",q:"¿Qué palabra utilizamos para negar con el verbo TO BE?",options:["Not","And","The"],a:"Not",why:"Not convierte la oración en negativa."},
+{type:"mc",q:"¿Cuál es la forma negativa de I am happy?",options:["I am not happy","I not am happy","I is not happy"],a:"I am not happy",why:"Am + not."},
+{type:"mc",q:"¿Cuál es la forma negativa de She is a student?",options:["She not is a student","She is not a student","She are not a student"],a:"She is not a student",why:"Is + not."},
+{type:"mc",q:"Completa: They ___ not teachers.",options:["Am","Is","Are"],a:"Are",why:"They are not."},
+{type:"tf",q:"Not se utiliza para formar oraciones negativas con el verbo To Be.",a:true,why:"Ejemplo: He is not happy."},
+{type:"tf",q:"I am not happy es una oración afirmativa.",a:false,why:"Es una oración negativa."},
+{type:"tf",q:"She is not my sister está correctamente escrita.",a:true,why:"La estructura es sujeto + is + not."},
+{type:"fill",q:"Completa: I am ___ sad.",a:"not",why:"Not expresa negación."},
+{type:"fill",q:"Completa: He is ___ a teacher.",a:"not",why:"He is not a teacher."},
+{type:"fill",q:"Completa: We are ___ students.",a:"not",why:"We are not students."},
+{type:"mc",q:"¿Cuál es la contracción de IS NOT?",options:["Isn't","Aren't","Amn't"],a:"Isn't",why:"Is not = Isn't."},
+{type:"mc",q:"¿Cuál es la contracción de ARE NOT?",options:["Am not","Aren't","Isn't"],a:"Aren't",why:"Are not = Aren't."},
+{type:"order",q:"Ordena: not / am / I / tired",a:"I am not tired",why:"Sujeto + verbo + not + complemento."},
+{type:"order",q:"Ordena: is / She / not / happy",a:"She is not happy",why:"She + is + not + happy."},
+{type:"order",q:"Ordena: not / They / are / teachers",a:"They are not teachers",why:"They + are + not + teachers."}
+]}
+];
+let score=0,hits=0,current=0,questions=[],answered=false,currentCategory="",foundWords=[];
+const categoriesDiv=document.getElementById("categories");
+categories.forEach((cat,i)=>{const card=document.createElement("button");card.className="category";card.style.background=cat.color;card.innerHTML=`<div class="emoji">${cat.emoji}</div><h3>${cat.name}</h3><p>${cat.description}</p><div class="progress-bg"><div class="progress-fill" style="width:0%"></div></div><p>🔓 Nivel disponible</p>`;card.onclick=()=>startCategory(i);categoriesDiv.appendChild(card)});
+function startCategory(i){currentCategory=categories[i].name;questions=[...categories[i].questions];startGame()}
+function startReview(){currentCategory="Reto general";questions=categories.flatMap(c=>c.questions).sort(()=>Math.random()-.5).slice(0,25);startGame()}
+function startGame(){current=0;document.getElementById("game").style.display="block";document.getElementById("game").scrollIntoView({behavior:"smooth"});renderQuestion()}
+function goHome(){document.getElementById("game").style.display="none";document.getElementById("categories").scrollIntoView({behavior:"smooth"})}
+function renderQuestion(){answered=false;const q=questions[current];document.getElementById("counter").textContent=`${current+1} / ${questions.length}`;document.getElementById("progress").style.width=`${current/questions.length*100}%`;document.getElementById("feedback").style.display="none";document.getElementById("nextBtn").style.display="none";let html=`<div class="question">${q.q}</div><div class="instruction">Lee con atención y selecciona tu respuesta.</div>`;
+if(q.type==="mc"){html+='<div class="answers">';q.options.forEach((o,i)=>html+=`<button type="button" class="answer" data-answer-index="${i}" data-answer-value="${String(o).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}">${o}</button>`);html+='</div>'}
+if(q.type==="tf")html+='<div class="answers"><button type="button" class="answer" data-answer-index="0" data-answer-value="true">VERDADERO</button><button type="button" class="answer" data-answer-index="1" data-answer-value="false">FALSO</button></div>';
+if(q.type==="fill")html+=`<input id="answerInput" type="text" placeholder="Escribe tu respuesta en inglés..." autocomplete="off"><br><button class="action" onclick="checkInput()">Comprobar respuesta</button>`;
+if(q.type==="order"){const shuffled=q.a.split(" ").map((w,i)=>({w,i})).sort(()=>Math.random()-.5);html+=`<p><b>Selecciona las palabras en el orden correcto:</b></p><div class="word-slots" id="slots"></div><div class="word-bank" id="bank">${shuffled.map((x,i)=>`<button class="word" id="word${i}" onclick="selectWord(${i})">${x.w}</button>`).join("")}</div><button class="action" onclick="checkOrder()">Comprobar oración</button> <button class="back-btn" onclick="renderQuestion()">Reiniciar</button>`;window.orderWords=shuffled;window.orderSelection=[]}
+document.getElementById("questionArea").innerHTML=html}
+// Manejo de clics por delegación para respuestas creadas dinámicamente.
+document.getElementById("questionArea").addEventListener("click", function(event){
+  const button = event.target.closest("button.answer[data-answer-index]");
+  if(!button || !this.contains(button)) return;
+  checkAnswer(Number(button.dataset.answerIndex), button.dataset.answerValue);
+});
+
+function checkAnswer(buttonIndex,value){
+  if(answered)return;
+  const q=questions[current];
+  if(!q || (q.type!=="mc" && q.type!=="tf"))return;
+  const buttons=Array.from(document.querySelectorAll("#questionArea .answer"));
+  const selected=buttons[Number(buttonIndex)];
+  if(!selected)return;
+  const correct=q.type==="tf" ? (String(value)==="true")===q.a : String(value)===String(q.a);
+  buttons.forEach((b,i)=>{
+    if(!b)return;
+    b.disabled=true;
+    if(q.type==="mc" && String(b.textContent).trim()===String(q.a).trim()){
+      b.classList.add("correct");
+    }
+    if(q.type==="tf"){
+      const isCorrectOption=(i===0 && q.a===true)||(i===1 && q.a===false);
+      if(isCorrectOption)b.classList.add("correct");
+    }
+  });
+  if(!correct)selected.classList.add("wrong");
+  else selected.classList.add("correct");
+  finishAnswer(correct,q.why);
+}
+function checkInput(){
+  if(answered)return;
+  const q=questions[current];
+  const input=document.getElementById("answerInput");
+  const correct=input.value.trim().toLowerCase()===String(q.a).trim().toLowerCase();
+  input.disabled=true;
+  input.style.borderColor=correct ? "#26ae80" : "#ff6384";
+  input.style.background=correct ? "#d8f8e9" : "#ffe1e6";
+  finishAnswer(correct,q.why);
+}
+function selectWord(i){if(answered)return;const b=document.getElementById("word"+i);if(b.disabled)return;b.disabled=true;b.style.opacity=".3";window.orderSelection.push({word:window.orderWords[i].w,index:i});const slot=document.createElement("button");slot.className="word";slot.textContent=window.orderWords[i].w;slot.onclick=()=>{if(answered)return;window.orderSelection=window.orderSelection.filter(x=>x.index!==i);b.disabled=false;b.style.opacity="1";slot.remove()};document.getElementById("slots").appendChild(slot)}
+function checkOrder(){if(answered)return;const q=questions[current],response=window.orderSelection.map(x=>x.word).join(" ");finishAnswer(response.toLowerCase()===q.a.toLowerCase(),q.why)}
+function finishAnswer(correct,why){answered=true;const f=document.getElementById("feedback");f.style.display="block";if(correct){score+=10;hits++;f.className="feedback good";f.innerHTML="🎉 ¡Excelente! Respuesta correcta.<br>"+why}else{f.className="feedback bad";f.innerHTML="💡 ¡Sigue intentando!<br>Respuesta correcta: <b>"+questions[current].a+"</b><br>"+why}document.getElementById("score").textContent=score;document.getElementById("hits").textContent=hits;document.getElementById("nextBtn").style.display="inline-block"}
+function nextQuestion(){current++;if(current<questions.length)renderQuestion();else showResult()}
+function showResult(){document.getElementById("progress").style.width="100%";document.getElementById("questionArea").innerHTML=`<div class="result"><div class="big">🏆</div><h2>¡Desafío completado!</h2><p>Has terminado: <b>${currentCategory}</b></p><h2>⭐ ${score} puntos acumulados</h2><p>Respuestas correctas acumuladas: ${hits}</p><p>¡Continúa practicando para mejorar tu inglés!</p><button class="action" onclick="goHome()">Elegir otra categoría</button></div>`;document.getElementById("feedback").style.display="none";document.getElementById("nextBtn").style.display="none"}
+const gridLetters=["P R O N O U N S X","A I W E T H E Y Z","S I N G U L A R X","A R E B O O K S X","V E R B I S A M X","A N S T U D E N T","T S H E W E A R X","I T P L U R A L X","C A T S B O X E S"].map(r=>r.split(" "));
+const puzzleWords=["AM","IS","ARE","SHE","HE","WE","IT","NOT"];
+function startPuzzle(type){currentCategory=type==="wordsearch"?"Sopa de letras":"Crucigrama";document.getElementById("game").style.display="block";document.getElementById("game").scrollIntoView({behavior:"smooth"});document.getElementById("progress").style.width="0%";document.getElementById("counter").textContent="Juego especial";document.getElementById("feedback").style.display="none";document.getElementById("nextBtn").style.display="none";type==="wordsearch"?renderWordSearch():renderCrossword()}
+function renderWordSearch(){foundWords=[];let html=`<div class="question">🔎 Sopa de letras</div><p>Encuentra las palabras relacionadas con los temas de inglés.</p><p><b>Palabras:</b> ${puzzleWords.join(" · ")}</p><p>Selecciona las letras en el tablero para formar una palabra.</p><div class="letter-grid">`;gridLetters.forEach((row,r)=>row.forEach((l,c)=>html+=`<button class="letter" id="cell${r}-${c}" onclick="chooseLetter(${r},${c})">${l}</button>`));html+=`</div><p id="selectedText" style="text-align:center;font-weight:900">Palabra: </p><div class="tools"><button onclick="checkWordSearch()">Comprobar palabra</button><button onclick="resetWordSearch()">Limpiar selección</button></div><p id="foundText">Palabras encontradas: 0 / ${puzzleWords.length}</p>`;document.getElementById("questionArea").innerHTML=html;window.selectedCells=[];window.selectedString=""}
+function chooseLetter(r,c){const id=`${r}-${c}`;const cell=document.getElementById(`cell${id}`);const label=document.getElementById("selectedText");if(!cell||!label||!gridLetters[r]||typeof gridLetters[r][c]==="undefined")return;if(window.selectedCells.includes(id))return;window.selectedCells.push(id);window.selectedString+=gridLetters[r][c];cell.classList.add("selected");label.textContent="Palabra: "+window.selectedString}
+function checkWordSearch(){const word=window.selectedString;if(puzzleWords.includes(word)&&!foundWords.includes(word)){foundWords.push(word);score+=10;document.getElementById("score").textContent=score;window.selectedCells.forEach(id=>document.getElementById(`cell${id}`).className="letter found");document.getElementById("foundText").textContent=`Palabras encontradas: ${foundWords.length} / ${puzzleWords.length}`;const f=document.getElementById("feedback");f.className="feedback good";f.style.display="block";f.textContent="🎉 ¡Palabra encontrada!"}else{const f=document.getElementById("feedback");f.className="feedback bad";f.style.display="block";f.textContent="Intenta otra combinación de letras."}resetWordSearch()}
+function resetWordSearch(){if(!window.selectedCells)return;window.selectedCells.forEach(id=>{const cell=document.getElementById(`cell${id}`);if(cell&&!cell.classList.contains("found"))cell.classList.remove("selected")});window.selectedCells=[];window.selectedString="";document.getElementById("selectedText").textContent="Palabra: "}
+function renderCrossword(){window.crossChecked=false;const clues=[{q:"1. Pronombre que significa YO.",a:"I"},{q:"2. Verbo que acompaña a HE.",a:"IS"},{q:"3. Palabra que significa NOSOTROS.",a:"WE"},{q:"4. Palabra que usamos para negar.",a:"NOT"},{q:"5. Verbo que acompaña a THEY.",a:"ARE"},{q:"6. Pronombre que significa ELLA.",a:"SHE"}];let html=`<div class="question">✏️ Mini crucigrama</div><p>Lee las pistas y escribe la respuesta en inglés.</p><div class="crossword">`;clues.forEach((x,i)=>html+=`<div class="crossword-row"><span>${x.q}</span><input type="text" id="cross${i}" maxlength="3"></div>`);html+=`</div><button class="action" onclick="checkCrossword()">Comprobar respuestas</button>`;window.crossAnswers=clues.map(x=>x.a);document.getElementById("questionArea").innerHTML=html}
+function checkCrossword(){
+  if(window.crossChecked)return;
+  window.crossChecked=true;
+  let correct=0;
+  window.crossAnswers.forEach((a,i)=>{
+    const input=document.getElementById("cross"+i);
+    const good=input.value.trim().toUpperCase()===a;
+    input.style.borderColor=good?"#26ae80":"#ff6384";
+    input.style.background=good?"#d8f8e9":"#ffe1e6";
+    if(good)correct++;
+  });
+  score+=correct*10;
+  hits+=correct;
+  document.getElementById("score").textContent=score;
+  document.getElementById("hits").textContent=hits;
+  const f=document.getElementById("feedback");
+  f.style.display="block";
+  f.className="feedback "+(correct===6?"good":"bad");
+  f.innerHTML=`🏆 Respuestas correctas: ${correct} de 6. ${correct===6?"¡Perfecto!":"¡Sigue practicando!"}`;
+}
+</script>
+</body></html>
